@@ -18,7 +18,7 @@ public:
 	}
 	
 	// Fixed To Double
-	constexpr operator double()
+	constexpr operator double() const
 	{
 		return double(fixedNum) / double(1 << pb);
 	}
@@ -27,7 +27,7 @@ public:
 	constexpr fixed& operator = (const fixed& fixed) = default;
 
 	// Addition
-	constexpr fixed operator + (const fixed& fixed) 
+	constexpr fixed operator + (const fixed& fixed) const
 	{ 
 		return newInstance(this->fixedNum + fixed.fixedNum);
 	}
@@ -38,7 +38,7 @@ public:
 	}
 
 	// Subtraction
-	constexpr fixed operator - (const fixed& fixed)
+	constexpr fixed operator - (const fixed& fixed) const
 	{
 		return newInstance(this->fixedNum - fixed.fixedNum);
 	}
@@ -49,7 +49,7 @@ public:
 	}
 
 	// Multiplication
-	constexpr fixed operator * (const fixed& fixed)
+	constexpr fixed operator * (const fixed& fixed) const
 	{
 		return newInstance(
 			(dsize(this->fixedNum) * dsize(fixed.fixedNum)) >> pb
@@ -57,12 +57,12 @@ public:
 	}
 	constexpr fixed& operator *= (const fixed& fixed)
 	{
-		dsize(this->fixedNum) *= dsize(fixed.fixedNum) >> pb;
-		return *this->fixedNum;
+		this->fixedNum = size((dsize(this->fixedNum) * dsize(fixed.fixedNum)) >> pb);
+		return *this;
 	}
 
 	// Division
-	constexpr fixed operator / (const fixed& fixed)
+	constexpr fixed operator / (const fixed& fixed) const
 	{
 		return newInstance(
 			(dsize(this->fixedNum) << pb) / dsize(fixed.fixedNum)
@@ -70,7 +70,7 @@ public:
 	}
 	constexpr fixed& operator /= (const fixed& fixed)
 	{
-		(dsize(this->fixedNum) << pb) /= dsize(fixed.fixedNum);
-		return *this->fixedNum;
+		this->fixedNum = size((dsize(this->fixedNum) << pb) / dsize(fixed.fixedNum));
+		return *this;
 	}
 };
